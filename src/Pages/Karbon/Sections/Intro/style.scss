@@ -1,0 +1,267 @@
+.intro {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 780px;
+  height: 100vh;
+  overflow-x: auto;
+  background-color: #fcfcfc;
+  background-image: url(/overlay.png);
+  background-repeat: no-repeat;
+  background-size: contain,cover;
+  border-bottom: 5px solid #0a3894;
+
+  .container {
+    margin: 0 auto;
+    padding-right: 15px;
+    padding-left: 15px;
+    max-width: 100%;
+
+    .card-content {
+      width: 100%;
+      max-height: 575px;
+      min-height: 575px;
+      min-width: 930px;
+      z-index: 1;
+      display: flex;
+      position: relative;
+      align-items: center;
+      justify-content: center;
+      box-shadow: rgba(0,0,0,0.15) 0 10px 30px 0;
+      align-items: stretch;
+      display: flex;
+      flex: 1;
+      
+      &::before {
+        background: linear-gradient(to right,#41faa4 0%,#16a3fe 100%);
+        border-radius: 4px 4px 4px 4px;
+        bottom: 0px;
+        content: '';
+        left: 0px;
+        right: 0px;
+        -webkit-transition: all 0.5s ease 0s;
+        transition: all 0.5s ease 0s;
+        top: 0px;
+        opacity: 1;
+        position: absolute;
+        z-index: -2;
+      }
+
+      &::after {
+        position: absolute;
+        border-radius: 4px;
+        left: 2px;
+        top: 2px;
+        content: '';
+        width: calc(100% - 4px);
+        height: calc(100% - 4px);
+        z-index: -1;
+        opacity: 1;
+        background: white;
+        -webkit-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+      }
+
+      .left-container {
+        max-width: 65%;
+        margin: 2px 0 2px 2px;
+        border-right: 2px solid #ececec;
+        align-items: stretch;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        .token  {
+          width: 100%;
+          height: calc(100% - 150px);
+          display: flex;
+          
+
+          .counter {
+            width: 35%;
+            height: 100%;
+            min-width: 250px;
+
+            .circle {
+              width: calc(100% - 40px);
+              height: 50%;
+              background:#1641b5;
+              border-radius: 50%;
+              margin: 20px;
+              min-width: 210px;
+              position: relative;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              &:after {
+                position: absolute;
+                left: 50%;
+                margin-left: -1px;
+                top: 0;
+                height: 50%;
+                width: 2px;
+                content: '';
+                background: #ffffff;
+              }
+
+              .centre {
+                width: 60%;
+                height: 60%;
+                background:#ffffff;
+                border-radius: 50%;
+              }
+            }
+          }
+
+          .contracts {
+            width: 65%;
+            height: 100%;
+            padding-top: 40px;
+            padding-left: 10px;
+
+            .contract-info {
+              display: flex;
+              width: 100%;
+              flex-direction: column;
+
+              .side {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 20px;
+
+                h2 {
+                  text-transform: uppercase;
+                  color: #1641b5;
+                  font-weight: 600;
+                  margin: 0 0 10px;
+                }
+
+                p {
+                  color: #637097;
+                  font-size: 0.85em;
+                  line-height: 1.86;
+                  font-weight: 300;
+                  padding-right: 15px;
+                }
+
+                &.double {
+                  display: flex;
+                  flex-direction: row;
+
+                  & > div {
+                    width: 50%;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        .info {
+          padding: 20px;
+
+          h3 {
+            text-transform: uppercase;
+            color: #1641b5;
+            font-weight: 600;
+            margin: 0 0 10px;
+            font-size: 1.33em;
+          }
+
+          p {
+            color: #637097;
+            font-size: 1em;
+            line-height: 1.86;
+            font-weight: 300;
+            padding-right: 15px;
+          }
+        }
+      }
+
+      .right-container {
+        flex: 1;
+        max-width: 35%;
+      }
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .intro {
+    .container {
+      max-width: 960px;
+
+      .card-content {
+        .left-container {
+          .token  {
+            .contracts {
+              .contract-info {
+                .side {
+                  h2 {
+                    font-size: 0.9em;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .intro {
+    .container {
+      max-width: 1140px;
+
+      .card-content {
+        .left-container {
+          .token  {
+            .contracts {
+              .contract-info {
+                .side {
+                  h2 {
+                    font-size: 1em;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  .intro {
+    .container {
+      .card-content {
+
+        .left-container {
+          .token  {
+            .contracts {
+              .contract-info {
+                .side {
+                  h2 {
+                    font-size: 0.9em;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .intro {
+    align-items: center !important;
+    display: flex;
+  }
+}

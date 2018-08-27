@@ -1,0 +1,18 @@
+{
+  "title": "Página de inversión",
+  "subtitle": "Aquí vas a poder invertir en la campaña crowdsale. hasta el momento, necesitaras tener el cliente Metamask para poder invertir en la crowdsale.",
+  "currentAccount": "Cuenta Actual",
+  "tokenAddress": "Dirección Token",
+  "crowdsaleAddress": "Dirección del Contrato Crowdsale",
+  "name": "Nombre",
+  "ticker": "Ticker",
+  "supply": "Suministro total",
+  "balance": "Balance",
+  "balanceInfo": "Tu balance en tokens.",
+  "investAmount": "Monto a invertir",
+  "invalidValue": "Valor inválido",
+  "enterAmount": "Completa el monto",
+  "invest": "Invierte ahora",
+  "thinkTwice": "Piensa con cuidado tu inversión en ICOs. <br /> Los Tokens te serán depositados en una billetera que vos uses para comprar tokens.",
+  "buyOK": "Congratulations, your bought was successfully!"
+}
