@@ -1,4 +1,5 @@
 import React from 'react'
+import get from 'lodash/get'
 import PropTypes from 'prop-types'
 import Component from '@reactions/component'
 import style from './style.scss'
@@ -9,9 +10,12 @@ import CrowdsaleABI from './ABIs/Crowdsale-ABI.json'
 import Karbon14TokenABI from './ABIs/Karbon14Token-ABI.json'
 
 const SetMethodValue = async (method, setState, prop, params) => {
-  const m = params ? method(params) : method()
-  await m.call().then(r => {
-    setState({ [prop]: r })
+  await method(params, (err, res) => {
+    if (err) return
+    if (res) {
+      const c = get(res, 'c', [])
+      setState({ [prop]: c.length ? c[0] : res })
+    }
   })
 }
 
@@ -32,9 +36,6 @@ const Intro = ({ getTranslation }) => (
   >
     {({ accounts = {}, deployedContracts = [], web3 }) => {
       const { Karbon14Crowdsale = {}, Karbon14Token = {} } = deployedContracts
-      console.log('deployedContracts: ', deployedContracts)
-      console.log('accounts: ', accounts)
-      console.log('web3: ', web3)
       return (
         <Component
           initialState={{
@@ -44,23 +45,23 @@ const Intro = ({ getTranslation }) => (
             balanceOf: undefined
           }}
           render={({ state, setState }) => {
-            if (Karbon14Crowdsale.methods) {
-              const crowdsaleMethods = Karbon14Crowdsale.methods
+            if (Karbon14Crowdsale.address) {
               !state.totalSupply &&
                 SetMethodValue(
-                  crowdsaleMethods.getTokenTotalSupply,
+                  Karbon14Crowdsale.getTokenTotalSupply,
                   setState,
                   'totalSupply'
                 )
             }
-            if (Karbon14Token.methods) {
-              const TokenMethods = Karbon14Token.methods
-              !state.name && SetMethodValue(TokenMethods.name, setState, 'name')
+
+            if (Karbon14Token.address) {
+              !state.name &&
+                SetMethodValue(Karbon14Token.name, setState, 'name')
               !state.ticker &&
-                SetMethodValue(TokenMethods.symbol, setState, 'ticker')
+                SetMethodValue(Karbon14Token.symbol, setState, 'ticker')
               !state.balanceOf &&
                 SetMethodValue(
-                  TokenMethods.balanceOf,
+                  Karbon14Token.balanceOf,
                   setState,
                   'balanceOf',
                   accounts.addresses[0]
@@ -86,11 +87,11 @@ const Intro = ({ getTranslation }) => (
                               <p>{getTranslation('intro.currentAccount')}</p>
                             </div>
                             <div className="side">
-                              <h2>{Karbon14Token._address}</h2>
+                              <h2>{Karbon14Token.address}</h2>
                               <p>{getTranslation('intro.tokenAddress')}</p>
                             </div>
                             <div className="side">
-                              <h2>{Karbon14Crowdsale._address}</h2>
+                              <h2>{Karbon14Crowdsale.address}</h2>
                               <p>{getTranslation('intro.crowdsaleAddress')}</p>
                             </div>
                             <div className="side double">
@@ -126,11 +127,8 @@ const Intro = ({ getTranslation }) => (
                         balance={state.balanceOf}
                         ticker={state.ticker}
                         getTranslation={getTranslation}
-                        buyTokens={
-                          Karbon14Crowdsale.methods &&
-                          Karbon14Crowdsale.methods.buyTokens
-                        }
-                        web3={global.web3}
+                        buyTokens={Karbon14Crowdsale.buyTokens}
+                        web3={web3}
                         accounts={accounts}
                       />
                     </div>

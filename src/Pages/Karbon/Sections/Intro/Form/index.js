@@ -7,33 +7,18 @@ import { Karbon } from '../../../../../styles/core'
 import { Button } from '@react-core/button'
 import { TextField } from '@react-core/textfield'
 
-const onBuy = async (
-  values,
-  api,
-  getTranslation,
-  buyTokens,
-  web3,
-  accounts
-) => {
-  console.log(web3)
-  try {
-    await buyTokens([
-      accounts.addresses[0],
-      {
-        value: web3.toWei(1, 'ether'),
-        from: accounts.addresses[0]
+const onBuy = (values, api, getTranslation, buyTokens, web3, accounts) => {
+  buyTokens(
+    accounts.addresses[0],
+    { from: accounts.addresses[0], value: web3.toWei(values.tokens, 'ether') },
+    function(err, res) {
+      if (err) return
+      if (res) {
+        api.resetForm()
+        alert(getTranslation('intro.buyOK'))
       }
-    ])
-      .call()
-      .then((e, r) => {
-        console.log(e)
-        console.log(r)
-        // api.resetForm()
-        // alert(getTranslation('intro.buyOK'))
-      })
-  } catch (e) {
-    alert(e)
-  }
+    }
+  )
 }
 
 const validationSchema = getTranslation => {
@@ -104,10 +89,12 @@ const Form = ({
 )
 
 Form.propTypes = {
-  balance: PropTypes.string,
+  balance: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   ticker: PropTypes.string,
   getTranslation: PropTypes.func,
-  buyTokens: PropTypes.func
+  buyTokens: PropTypes.func,
+  web3: PropTypes.object,
+  accounts: PropTypes.object
 }
 
 export { Form }
