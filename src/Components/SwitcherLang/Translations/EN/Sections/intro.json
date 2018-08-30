@@ -9,10 +9,12 @@
   "supply": "Total Supply",
   "balance": "Balance",
   "balanceInfo": "Your balance in tokens.",
+  "copiedAddress": "Address copied to clipboard",
   "investAmount": "Amount to invest (in Ether)",
   "invalidValue": "Invalid value",
   "enterAmount": "Choose amount",
   "invest": "Invest now",
   "thinkTwice": "Think twice before inverstment in ICOs. <br /> Tokens will be deposited on a wallet you used to buy tokens.",
-  "buyOK": "Congratulations, your bought was successfully!"
+  "buyOK": "Congratulations, your bought was successfully!",
+  "buyError": "Ups! Something went wrong :("
 }

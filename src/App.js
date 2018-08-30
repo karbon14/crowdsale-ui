@@ -1,6 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import style from './index.css'
+import { ToastContainer } from './Components/Toast'
 import { LanguageProvider } from './Components/SwitcherLang'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 moment.tz.setDefault('America/Argentina/Buenos_Aires')
@@ -17,6 +18,7 @@ const App = () => (
           <Route component={NoMatch} />
         </Switch>
       </Router>
+      <ToastContainer hideProgressBar />
       <style jsx global>
         {style}
       </style>

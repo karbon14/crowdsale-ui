@@ -2,10 +2,11 @@ import React from 'react'
 import * as yup from 'yup'
 import { Formik } from 'formik'
 import PropTypes from 'prop-types'
-import style from './style.scss'
-import { Karbon } from '../../../../../styles/core'
 import { Button } from '@react-core/button'
 import { TextField } from '@react-core/textfield'
+import { toast } from '../../../../../Components/Toast'
+import { Karbon } from '../../../../../styles/core'
+import style from './style.scss'
 
 const toLocale = n => {
   return Number(n).toLocaleString('de-DE', {
@@ -17,11 +18,18 @@ const onBuy = (values, api, getTranslation, buyTokens, web3, accounts) => {
   buyTokens(
     accounts.addresses[0],
     { from: accounts.addresses[0], value: web3.toWei(values.amount, 'ether') },
-    function(err, res) {
-      if (err) return
+    (err, res) => {
+      if (err) {
+        toast.error(getTranslation('intro.buyError'), {
+          position: toast.POSITION.BOTTOM_LEFT
+        })
+      }
+
       if (res) {
         api.resetForm()
-        alert(getTranslation('intro.buyOK'))
+        toast.success(getTranslation('intro.buyOK'), {
+          position: toast.POSITION.BOTTOM_LEFT
+        })
       }
     }
   )

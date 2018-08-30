@@ -91,16 +91,25 @@ const Intro = ({ getTranslation }) => (
                           <Info
                             value={accounts ? accounts.addresses[0] : ''}
                             label={getTranslation('intro.currentAccount')}
+                            copiedValueMsg={getTranslation(
+                              'intro.copiedAddress'
+                            )}
                             isLink={true}
                           />
                           <Info
                             value={Karbon14Token.address}
                             label={getTranslation('intro.tokenAddress')}
+                            copiedValueMsg={getTranslation(
+                              'intro.copiedAddress'
+                            )}
                             isLink={true}
                           />
                           <Info
                             value={Karbon14Crowdsale.address}
                             label={getTranslation('intro.crowdsaleAddress')}
+                            copiedValueMsg={getTranslation(
+                              'intro.copiedAddress'
+                            )}
                             isLink={true}
                           />
 

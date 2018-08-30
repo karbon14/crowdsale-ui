@@ -9,10 +9,12 @@
   "supply": "Suministro total",
   "balance": "Balance",
   "balanceInfo": "Tu balance en tokens.",
+  "copiedAddress": "Dirección copiada al portapapeles",
   "investAmount": "Monto a invertir (en Ether)",
   "invalidValue": "Valor inválido",
   "enterAmount": "Completa el monto",
   "invest": "Invierte ahora",
   "thinkTwice": "Piensa con cuidado tu inversión en ICOs. <br /> Los Tokens te serán depositados en una billetera que vos uses para comprar tokens.",
-  "buyOK": "Congratulations, your bought was successfully!"
+  "buyOK": "Congratulations, your bought was successfully!",
+  "buyError": "Huy! Algo salió mal :("
 }
