@@ -75,6 +75,7 @@
     "prop-types": "15.6.2",
     "react": "16.4.1",
     "react-adopt": "0.6.0",
+    "react-copy-to-clipboard": "5.0.1",
     "react-dom": "16.4.1",
     "react-github-corner": "2.3.0",
     "react-html-parser": "2.0.2",

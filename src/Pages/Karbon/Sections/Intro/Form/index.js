@@ -7,10 +7,16 @@ import { Karbon } from '../../../../../styles/core'
 import { Button } from '@react-core/button'
 import { TextField } from '@react-core/textfield'
 
+const toLocale = n => {
+  return Number(n).toLocaleString('de-DE', {
+    minimumFractionDigits: 0
+  })
+}
+
 const onBuy = (values, api, getTranslation, buyTokens, web3, accounts) => {
   buyTokens(
     accounts.addresses[0],
-    { from: accounts.addresses[0], value: web3.toWei(values.tokens, 'ether') },
+    { from: accounts.addresses[0], value: web3.toWei(values.amount, 'ether') },
     function(err, res) {
       if (err) return
       if (res) {
@@ -23,7 +29,7 @@ const onBuy = (values, api, getTranslation, buyTokens, web3, accounts) => {
 
 const validationSchema = getTranslation => {
   return yup.object().shape({
-    tokens: yup
+    amount: yup
       .number()
       .min('0.01', getTranslation('intro.invalidValue'))
       .typeError(getTranslation('intro.invalidValue'))
@@ -33,10 +39,11 @@ const validationSchema = getTranslation => {
 
 const Form = ({
   balance = '',
+  rate = 0,
   ticker = '',
   getTranslation,
   buyTokens,
-  web3,
+  web3 = { toWei: new Function() },
   accounts
 }) => (
   <div className="form">
@@ -55,23 +62,29 @@ const Form = ({
           onBuy(values, api, getTranslation, buyTokens, web3, accounts)
         }
         enableReinitialize
-        initialValues={{ tokens: 1 }}
+        initialValues={{ amount: 1 }}
         validationSchema={() => validationSchema(getTranslation)}
         render={api => (
           <form onSubmit={api.handleSubmit}>
             <TextField
               theme={Karbon}
-              name="tokens"
+              name="amount"
               step="0.25"
+              min="0.01"
               type="number"
               autoComplete="off"
-              value={api.values.tokens}
-              label={getTranslation('intro.investAmount')}
-              placeholder={api.errors.tokens}
+              onKeyUp={new Function()}
               onChange={api.handleChange}
               onBlur={api.handleBlur}
-              data-invalid={api.touched.tokens && !!api.errors.tokens}
+              placeholder={api.errors.amount}
+              value={api.values.amount}
+              label={getTranslation('intro.investAmount')}
+              data-invalid={api.touched.amount && !!api.errors.amount}
             />
+
+            <p>{`${api.values.amount || 0} Ether = ${toLocale(
+              api.values.amount * Number(rate)
+            )} K14`}</p>
 
             <Button
               theme={Karbon}
@@ -90,6 +103,7 @@ const Form = ({
 
 Form.propTypes = {
   balance: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  rate: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   ticker: PropTypes.string,
   getTranslation: PropTypes.func,
   buyTokens: PropTypes.func,

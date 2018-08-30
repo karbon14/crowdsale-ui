@@ -9,7 +9,7 @@
   "supply": "Suministro total",
   "balance": "Balance",
   "balanceInfo": "Tu balance en tokens.",
-  "investAmount": "Monto a invertir",
+  "investAmount": "Monto a invertir (en Ether)",
   "invalidValue": "Valor inválido",
   "enterAmount": "Completa el monto",
   "invest": "Invierte ahora",

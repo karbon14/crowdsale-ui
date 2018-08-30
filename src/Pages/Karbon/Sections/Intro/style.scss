@@ -16,7 +16,7 @@
     margin: 0 auto;
     padding-right: 15px;
     padding-left: 15px;
-    max-width: 100%;
+    max-width: 1140px;
 
     .card-content {
       width: 100%;
@@ -126,33 +126,12 @@
               width: 100%;
               flex-direction: column;
 
-              .side {
+              .double {
+                flex-direction: row;
                 display: flex;
-                flex-direction: column;
-                margin-bottom: 20px;
 
-                h2 {
-                  text-transform: uppercase;
-                  color: #1641b5;
-                  font-weight: 600;
-                  margin: 0 0 10px;
-                }
-
-                p {
-                  color: #637097;
-                  font-size: 0.85em;
-                  line-height: 1.86;
-                  font-weight: 300;
-                  padding-right: 15px;
-                }
-
-                &.double {
-                  display: flex;
-                  flex-direction: row;
-
-                  & > div {
-                    width: 50%;
-                  }
+                & :global(.side) {
+                  width: 50%;
                 }
               }
             }
@@ -168,6 +147,7 @@
             font-weight: 600;
             margin: 0 0 10px;
             font-size: 1.33em;
+            user-select: none;
           }
 
           p {
@@ -176,6 +156,7 @@
             line-height: 1.86;
             font-weight: 300;
             padding-right: 15px;
+            user-select: none;
           }
         }
       }
@@ -183,77 +164,6 @@
       .right-container {
         flex: 1;
         max-width: 35%;
-      }
-    }
-  }
-}
-
-@media (min-width: 992px) {
-  .intro {
-    .container {
-      max-width: 960px;
-
-      .card-content {
-        .left-container {
-          .token  {
-            .contracts {
-              .contract-info {
-                .side {
-                  h2 {
-                    font-size: 0.9em;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-@media (min-width: 1200px) {
-  .intro {
-    .container {
-      max-width: 1140px;
-
-      .card-content {
-        .left-container {
-          .token  {
-            .contracts {
-              .contract-info {
-                .side {
-                  h2 {
-                    font-size: 1em;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 991px) {
-  .intro {
-    .container {
-      .card-content {
-
-        .left-container {
-          .token  {
-            .contracts {
-              .contract-info {
-                .side {
-                  h2 {
-                    font-size: 0.9em;
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     }
   }

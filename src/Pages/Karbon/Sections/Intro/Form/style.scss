@@ -18,9 +18,11 @@
       line-height: 1.86;
       font-weight: 300;
       margin: 10px 0 10px 20px;
+      user-select: none;
 
       &.info {
-        padding-top: 20px; 
+        padding-top: 10px;
+        user-select: none;
       }
     }
   }
@@ -44,6 +46,7 @@
       font-weight: 300;
       padding-top: 20px; 
       margin: 10px 0 10px 20px;
+      user-select: none;
     }
   }
 }
