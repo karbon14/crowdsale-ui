@@ -3,9 +3,9 @@ import * as yup from 'yup'
 import { Formik } from 'formik'
 import PropTypes from 'prop-types'
 import { Button } from '@react-core/button'
+import { toast } from '@react-core/toast'
+import { theme } from '@react-core/theme-karbon'
 import { TextField } from '@react-core/textfield'
-import { toast } from '../../../../../Components/Toast'
-import { Karbon } from '../../../../../styles/core'
 import style from './style.scss'
 
 const toLocale = n => {
@@ -75,7 +75,7 @@ const Form = ({
         render={api => (
           <form onSubmit={api.handleSubmit}>
             <TextField
-              theme={Karbon}
+              theme={theme}
               name="amount"
               step="0.25"
               min="0.01"
@@ -95,7 +95,7 @@ const Form = ({
             )} K14`}</p>
 
             <Button
-              theme={Karbon}
+              theme={theme}
               type="button"
               label={getTranslation('intro.invest')}
               onClick={api.submitForm}

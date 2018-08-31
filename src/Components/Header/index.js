@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Karbon } from '../../styles/core'
+import { theme } from '@react-core/theme-karbon'
 import { Button } from '@react-core/button'
 import { DownloadWhitepaper } from '../Utils'
 import style from './style.scss'
@@ -51,7 +51,7 @@ const Header = ({ sections = [], homeURL, getTranslation }) => (
                               ))}
 
                               <Button
-                                theme={Karbon}
+                                theme={theme}
                                 label={getTranslation('header.whitepaper')}
                                 type={'secondary'}
                                 onClick={DownloadWhitepaper}
@@ -60,7 +60,7 @@ const Header = ({ sections = [], homeURL, getTranslation }) => (
                           </div>
 
                           <Button
-                            theme={Karbon}
+                            theme={theme}
                             label={
                               isMobile
                                 ? ''
