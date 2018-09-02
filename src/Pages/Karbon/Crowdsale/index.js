@@ -109,7 +109,7 @@ const Crowdsale = ({ selectedLanguage, getTranslation }) => (
             if (!isEqual(props.deployedContracts, prevProps.deployedContracts))
               updateUI({ deployedContracts, accounts, setState, web3 })
           }}
-          render={({ state }) => (
+          render={({ state, setState }) => (
             <div className="intro">
               <div className="container">
                 <div className="card-content">
@@ -198,6 +198,14 @@ const Crowdsale = ({ selectedLanguage, getTranslation }) => (
                       web3={web3}
                       accounts={accounts}
                       amountToLocale={amountToLocale}
+                      updateUI={() =>
+                        updateUI({
+                          deployedContracts,
+                          accounts,
+                          setState,
+                          web3
+                        })
+                      }
                     />
                   </div>
                 </div>

@@ -8,8 +8,16 @@ import { theme } from '@react-core/theme-karbon'
 import { TextField } from '@react-core/textfield'
 import style from './style.scss'
 
-const onBuy = (values, api, getTranslation, buyTokens, web3, accounts) => {
-  buyTokens(
+const onBuy = async ({
+  values,
+  api,
+  getTranslation,
+  buyTokens,
+  updateUI,
+  web3,
+  accounts
+}) => {
+  await buyTokens(
     accounts.addresses[0],
     { from: accounts.addresses[0], value: web3.toWei(values.amount, 'ether') },
     (err, res) => {
@@ -23,6 +31,12 @@ const onBuy = (values, api, getTranslation, buyTokens, web3, accounts) => {
         api.resetForm()
         toast.success(getTranslation('intro.buyOK'), {
           position: toast.POSITION.BOTTOM_LEFT
+        })
+
+        web3.eth.getTransactionReceiptMined(res).then(txReceipt => {
+          // Mining is finished
+          // const { blockNumber, transactionHash, gasUsed } = txReceipt
+          updateUI(txReceipt)
         })
       }
     }
@@ -46,6 +60,7 @@ const Form = ({
   getTranslation,
   amountToLocale,
   buyTokens,
+  updateUI,
   web3 = { toWei: new Function() },
   accounts
 }) => (
@@ -62,7 +77,15 @@ const Form = ({
         validateOnChange
         validateOnSubmit
         onSubmit={(values, api) =>
-          onBuy(values, api, getTranslation, buyTokens, web3, accounts)
+          onBuy({
+            values,
+            api,
+            getTranslation,
+            buyTokens,
+            updateUI,
+            web3,
+            accounts
+          })
         }
         enableReinitialize
         initialValues={{ amount: 1 }}
@@ -111,6 +134,7 @@ Form.propTypes = {
   getTranslation: PropTypes.func,
   amountToLocale: PropTypes.func,
   buyTokens: PropTypes.func,
+  updateUI: PropTypes.func,
   web3: PropTypes.object,
   accounts: PropTypes.object
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Component from '@reactions/component'
+import getTransactionReceiptMined from './Helpers'
 
 const EthereumContext = React.createContext()
 
@@ -23,6 +24,8 @@ const EthereumProvider = ({ contracts = [], children }) => (
         didMount={({ state, setState }) => {
           window.addEventListener('load', () => {
             if (window.web3) {
+              window.web3.eth.getTransactionReceiptMined = getTransactionReceiptMined
+
               // Save Web3 State
               const web3State = { connected: true, web3: window.web3 }
               setState({ ...web3State })
