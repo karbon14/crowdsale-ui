@@ -1,0 +1,11 @@
+{
+  "days": "DÍAS",
+  "hours": "HORAS",
+  "minutes": "MINUTOS",
+  "seconds": "SEGUNDOS",
+  "ether": "Ether",
+  "raised": "Alcanzado:",
+  "softCap": "Soft Cap:",
+  "hardCap": "Hard Cap:",
+  "totalSupply": "Suministro total:"
+}

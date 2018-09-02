@@ -76,44 +76,6 @@
           width: 100%;
           height: calc(100% - 150px);
           display: flex;
-          
-
-          .counter {
-            width: 35%;
-            height: 100%;
-            min-width: 250px;
-
-            .circle {
-              width: calc(100% - 40px);
-              height: 50%;
-              background:#1641b5;
-              border-radius: 50%;
-              margin: 20px;
-              min-width: 210px;
-              position: relative;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-
-              &:after {
-                position: absolute;
-                left: 50%;
-                margin-left: -1px;
-                top: 0;
-                height: 50%;
-                width: 2px;
-                content: '';
-                background: #ffffff;
-              }
-
-              .centre {
-                width: 60%;
-                height: 60%;
-                background:#ffffff;
-                border-radius: 50%;
-              }
-            }
-          }
 
           .contracts {
             width: 65%;

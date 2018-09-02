@@ -2,18 +2,21 @@ import React from 'react'
 import style from './style.scss'
 import Header from '../../Components/Header'
 import { LanguageContext } from '../../Components/SwitcherLang/'
-import { Intro } from './Sections'
+import { Crowdsale } from './Crowdsale'
 
 const Karbon = () => (
   <LanguageContext.Consumer>
-    {({ getTranslation }) => (
+    {({ getTranslation, selectedLanguage }) => (
       <div className="karbon">
         <Header
           getTranslation={getTranslation}
           sections={[]}
           homeURL={process.env.HOME_URL}
         />
-        <Intro getTranslation={getTranslation} />
+        <Crowdsale
+          getTranslation={getTranslation}
+          selectedLanguage={selectedLanguage}
+        />
         <style jsx>{style}</style>
       </div>
     )}

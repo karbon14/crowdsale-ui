@@ -2,7 +2,7 @@ import React from 'react'
 import isEqual from 'lodash/isEqual'
 import PropTypes from 'prop-types'
 import Component from '@reactions/component'
-import { Info } from './UI'
+import { Counter, Info } from './UI'
 import style from './style.scss'
 import { Form } from './Form'
 import './Assets/overlay.png'
@@ -11,20 +11,43 @@ import { EthereumProvider } from './Utils/EthereumProvider'
 import CrowdsaleABI from './ABIs/Crowdsale-ABI.json'
 import Karbon14TokenABI from './ABIs/Karbon14Token-ABI.json'
 
-const toLocale = n =>
-  Number(n).toLocaleString('de-DE', { minimumFractionDigits: 0 })
-
 const updateUI = async ({ deployedContracts, accounts, setState, web3 }) => {
   const { Karbon14Token, Karbon14Crowdsale } = deployedContracts
 
+  // Get Crowdsale Data
+
   await Karbon14Crowdsale.getTokenTotalSupply((err, res) => {
-    res &&
-      setState({ totalSupply: toLocale(web3.fromWei(res.toNumber(), 'ether')) })
+    res && setState({ totalSupply: web3.fromWei(res.toNumber(), 'ether') })
+  })
+
+  await Karbon14Crowdsale.closingTime((err, res) => {
+    res && setState({ closingTime: res.toNumber() })
   })
 
   await Karbon14Crowdsale.rate((err, res) => {
     res && setState({ rate: res.toNumber() })
   })
+
+  await Karbon14Crowdsale.goal((err, res) => {
+    res && setState({ goal: web3.fromWei(res.toNumber(), 'ether') })
+  })
+
+  await Karbon14Crowdsale.cap((err, res) => {
+    res && setState({ cap: web3.fromWei(res.toNumber(), 'ether') })
+  })
+
+  await Karbon14Crowdsale.weiRaised((err, res) => {
+    res && setState({ weiRaised: web3.fromWei(res.toNumber(), 'ether') })
+  })
+
+  await Karbon14Crowdsale.getMaxCommunityTokens((err, res) => {
+    res &&
+      setState({
+        getMaxCommunityTokens: web3.fromWei(res.toNumber(), 'ether')
+      })
+  })
+
+  // Get Token Data
 
   await Karbon14Token.name((err, res) => {
     res && setState({ name: res })
@@ -35,12 +58,11 @@ const updateUI = async ({ deployedContracts, accounts, setState, web3 }) => {
   })
 
   await Karbon14Token.balanceOf(accounts.addresses[0], (err, res) => {
-    res &&
-      setState({ balanceOf: toLocale(web3.fromWei(res.toNumber(), 'ether')) })
+    res && setState({ balanceOf: web3.fromWei(res.toNumber(), 'ether') })
   })
 }
 
-const Intro = ({ getTranslation }) => (
+const Crowdsale = ({ selectedLanguage, getTranslation }) => (
   <EthereumProvider
     contracts={[
       {
@@ -57,10 +79,26 @@ const Intro = ({ getTranslation }) => (
   >
     {({ accounts = {}, deployedContracts = {}, web3 }) => {
       const { Karbon14Crowdsale = {}, Karbon14Token = {} } = deployedContracts
+
+      const amountToLocale = n => {
+        const locales = {
+          EN: 'en-ES',
+          ES: 'de-DE'
+        }
+        return Number(n).toLocaleString(locales[selectedLanguage], {
+          minimumFractionDigits: 0
+        })
+      }
+
       return (
         <Component
           initialState={{
             totalSupply: undefined,
+            closingTime: undefined,
+            goal: undefined,
+            cap: undefined,
+            weiRaised: undefined,
+            getMaxCommunityTokens: undefined,
             rate: undefined,
             name: undefined,
             ticker: undefined,
@@ -68,11 +106,8 @@ const Intro = ({ getTranslation }) => (
           }}
           deployedContracts={deployedContracts}
           didUpdate={({ props, prevProps, setState }) => {
-            if (
-              !isEqual(props.deployedContracts, prevProps.deployedContracts)
-            ) {
+            if (!isEqual(props.deployedContracts, prevProps.deployedContracts))
               updateUI({ deployedContracts, accounts, setState, web3 })
-            }
           }}
           render={({ state }) => (
             <div className="intro">
@@ -80,11 +115,14 @@ const Intro = ({ getTranslation }) => (
                 <div className="card-content">
                   <div className="left-container">
                     <div className="token">
-                      <div className="counter">
-                        <div className="circle">
-                          <div className="centre" />
-                        </div>
-                      </div>
+                      <Counter
+                        to={state.closingTime}
+                        cap={state.cap}
+                        goal={state.goal}
+                        raised={state.weiRaised}
+                        total={state.totalSupply / state.rate}
+                        getTranslation={getTranslation}
+                      />
 
                       <div className="contracts">
                         <div className="contract-info">
@@ -129,7 +167,9 @@ const Intro = ({ getTranslation }) => (
                           <Info
                             value={
                               state.totalSupply && state.ticker
-                                ? `${state.totalSupply} ${state.ticker}`
+                                ? `${amountToLocale(state.totalSupply)} ${
+                                    state.ticker
+                                  }`
                                 : ''
                             }
                             label={getTranslation('intro.supply')}
@@ -146,13 +186,18 @@ const Intro = ({ getTranslation }) => (
 
                   <div className="right-container">
                     <Form
-                      balance={state.balanceOf}
+                      balance={
+                        state.balanceOf
+                          ? amountToLocale(state.balanceOf)
+                          : state.balanceOf
+                      }
                       rate={state.rate}
                       ticker={state.ticker}
                       getTranslation={getTranslation}
                       buyTokens={Karbon14Crowdsale.buyTokens}
                       web3={web3}
                       accounts={accounts}
+                      amountToLocale={amountToLocale}
                     />
                   </div>
                 </div>
@@ -166,9 +211,10 @@ const Intro = ({ getTranslation }) => (
   </EthereumProvider>
 )
 
-Intro.propTypes = {
-  getTranslation: PropTypes.func,
-  deployedContracts: PropTypes.object
+Crowdsale.propTypes = {
+  selectedLanguage: PropTypes.string,
+  deployedContracts: PropTypes.object,
+  getTranslation: PropTypes.func
 }
 
-export { Intro }
+export { Crowdsale }

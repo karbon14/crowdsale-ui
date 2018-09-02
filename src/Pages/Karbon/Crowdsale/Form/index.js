@@ -8,12 +8,6 @@ import { theme } from '@react-core/theme-karbon'
 import { TextField } from '@react-core/textfield'
 import style from './style.scss'
 
-const toLocale = n => {
-  return Number(n).toLocaleString('de-DE', {
-    minimumFractionDigits: 0
-  })
-}
-
 const onBuy = (values, api, getTranslation, buyTokens, web3, accounts) => {
   buyTokens(
     accounts.addresses[0],
@@ -50,6 +44,7 @@ const Form = ({
   rate = 0,
   ticker = '',
   getTranslation,
+  amountToLocale,
   buyTokens,
   web3 = { toWei: new Function() },
   accounts
@@ -90,7 +85,7 @@ const Form = ({
               data-invalid={api.touched.amount && !!api.errors.amount}
             />
 
-            <p>{`${api.values.amount || 0} Ether = ${toLocale(
+            <p>{`${api.values.amount || 0} Ether = ${amountToLocale(
               api.values.amount * Number(rate)
             )} K14`}</p>
 
@@ -114,6 +109,7 @@ Form.propTypes = {
   rate: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   ticker: PropTypes.string,
   getTranslation: PropTypes.func,
+  amountToLocale: PropTypes.func,
   buyTokens: PropTypes.func,
   web3: PropTypes.object,
   accounts: PropTypes.object
