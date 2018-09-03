@@ -13,8 +13,10 @@
   "investAmount": "Amount to invest (in Ether)",
   "invalidValue": "Invalid value",
   "enterAmount": "Choose amount",
+  "USAInvestDisclaimer": "USA inversor",
   "invest": "Invest now",
   "thinkTwice": "Think twice before inverstment in ICOs. <br /> Tokens will be deposited on a wallet you used to buy tokens.",
   "buyOK": "Congratulations, your bought was successfully!",
-  "buyError": "Ups! Something went wrong :("
+  "buyError": "Ups! Something went wrong :(",
+  "metamaskError": "Ups! Metamask not detected :("
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import isEqual from 'lodash/isEqual'
 import PropTypes from 'prop-types'
 import Component from '@reactions/component'
+import { toast } from '@react-core/toast'
 import { Counter, Info } from './UI'
 import style from './style.scss'
 import { Form } from './Form'
@@ -77,7 +78,7 @@ const Crowdsale = ({ selectedLanguage, getTranslation }) => (
       }
     ]}
   >
-    {({ accounts = {}, deployedContracts = {}, web3 }) => {
+    {({ accounts = {}, deployedContracts = {}, web3, monitorErrors }) => {
       const { Karbon14Crowdsale = {}, Karbon14Token = {} } = deployedContracts
 
       const amountToLocale = n => {
@@ -87,6 +88,12 @@ const Crowdsale = ({ selectedLanguage, getTranslation }) => (
         }
         return Number(n).toLocaleString(locales[selectedLanguage], {
           minimumFractionDigits: 0
+        })
+      }
+
+      if (monitorErrors.length) {
+        toast.error(getTranslation('intro.metamaskError'), {
+          position: toast.POSITION.BOTTOM_LEFT
         })
       }
 

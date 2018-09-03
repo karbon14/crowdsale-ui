@@ -3,6 +3,7 @@ import * as yup from 'yup'
 import { Formik } from 'formik'
 import PropTypes from 'prop-types'
 import { Button } from '@react-core/button'
+import { Checkbox } from '@react-core/checkbox'
 import { toast } from '@react-core/toast'
 import { theme } from '@react-core/theme-karbon'
 import { TextField } from '@react-core/textfield'
@@ -88,7 +89,7 @@ const Form = ({
           })
         }
         enableReinitialize
-        initialValues={{ amount: 1 }}
+        initialValues={{ amount: 1, discalimer: true }}
         validationSchema={() => validationSchema(getTranslation)}
         render={api => (
           <form onSubmit={api.handleSubmit}>
@@ -103,12 +104,24 @@ const Form = ({
               onChange={api.handleChange}
               onBlur={api.handleBlur}
               placeholder={api.errors.amount}
-              value={api.values.amount}
+              value={web3.version ? api.values.amount : ''}
               label={getTranslation('intro.investAmount')}
               data-invalid={api.touched.amount && !!api.errors.amount}
+              disabled={!web3.version}
             />
 
-            <p>{`${api.values.amount || 0} Ether = ${amountToLocale(
+            <Checkbox
+              theme={theme}
+              name="discalimer"
+              onChange={api.handleChange}
+              onBlur={api.handleBlur}
+              value={api.values.discalimer}
+              label={getTranslation('intro.USAInvestDisclaimer')}
+              disabled={!web3.version}
+            />
+
+            <p className="convertion">{`${api.values.amount ||
+              0} Ether = ${amountToLocale(
               api.values.amount * Number(rate)
             )} K14`}</p>
 
@@ -117,6 +130,7 @@ const Form = ({
               type="button"
               label={getTranslation('intro.invest')}
               onClick={api.submitForm}
+              disabled={!api.values.discalimer || !web3.version}
             />
           </form>
         )}
