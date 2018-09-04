@@ -6,17 +6,19 @@ import padStart from 'lodash/padStart'
 import Component from '@reactions/component'
 import style from './style.scss'
 
+const TIMEZONE = -3
 let _state, _setState, _interval
 
 const timer = () => {
   const from = moment.unix(_state.from)
   const to = moment.unix(_state.to)
-  const d = from.diff(moment.now()) < 0 ? to : from
+  const nowUTC = moment().add(TIMEZONE, 'hours')
+  const d = from.diff(nowUTC) < 0 ? to : from
 
-  const days = d.diff(moment.now(), 'days')
-  const hours = d.subtract(days, 'days').diff(moment.now(), 'hours')
-  const minutes = d.subtract(hours, 'hours').diff(moment.now(), 'minutes')
-  const seconds = d.subtract(minutes, 'minutes').diff(moment.now(), 'seconds')
+  const days = d.diff(nowUTC, 'days')
+  const hours = d.subtract(days, 'days').diff(nowUTC, 'hours')
+  const minutes = d.subtract(hours, 'hours').diff(nowUTC, 'minutes')
+  const seconds = d.subtract(minutes, 'minutes').diff(nowUTC, 'seconds')
   _state = { ..._state, days, hours, minutes, seconds }
   _setState(_state)
 }
@@ -62,7 +64,9 @@ const Counter = ({
     }}
     willUnmount={() => to && from && clearInterval(_interval)}
     render={({ state }) => {
-      const hasStarted = from && moment.unix(from).diff(moment.now()) < 0
+      const nowUTC = moment().add(TIMEZONE, 'hours')
+      const hasStarted = from && moment.unix(from).diff(nowUTC) < 0
+
       const goalAdvance = `${(goal * 100) / total}, 100`
       const capAdvance = `${(cap * 100) / total}, 100`
       const raisedAdvance = `${(raised * 100) / total}, 100`
@@ -117,7 +121,7 @@ const Counter = ({
             </div>
 
             <div className="centre">
-              {hasStarted && !capReached ? (
+              {(hasStarted && !capReached) || !hasStarted ? (
                 <React.Fragment>
                   <h3>
                     {getTranslation(

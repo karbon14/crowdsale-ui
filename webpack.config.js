@@ -37,11 +37,11 @@ const getPlugins = argv => {
       ),
       'process.env.TOKEN_ADDRESS': JSON.stringify(
         process.env.TOKEN_ADDRESS ||
-          '0x6bdbbee193c2b4a2b163a81431ca22b96ce54101'
+          '0x492bb3275c8db991e82183a95a2cf4422f97ea01'
       ),
       'process.env.CROWDSALE_ADDRESS': JSON.stringify(
         process.env.CROWDSALE_ADDRESS ||
-          '0x28c0b998a670ccc7ef5b23b5e3fecc5dc6fad197'
+          '0x393dfb59deede4afcba9d609977ce05176df7956'
       )
     })
   ]

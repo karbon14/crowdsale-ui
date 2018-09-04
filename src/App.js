@@ -5,7 +5,7 @@ import { ToastContainer } from '@react-core/toast'
 import { theme } from '@react-core/theme-karbon'
 import { LanguageProvider } from './Components/SwitcherLang'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-moment.tz.setDefault('America/Argentina/Buenos_Aires')
+moment.tz.setDefault('America/New_York')
 
 import { Karbon } from './Pages/Karbon'
 import { NoMatch } from './Pages/NoMatch'

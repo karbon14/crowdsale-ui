@@ -10,6 +10,18 @@ import { theme } from '@react-core/theme-karbon'
 import { TextField } from '@react-core/textfield'
 import style from './style.scss'
 
+const TIMEZONE = -3
+
+const validationSchema = getTranslation => {
+  return yup.object().shape({
+    amount: yup
+      .number()
+      .min('0.01', getTranslation('intro.invalidValue'))
+      .typeError(getTranslation('intro.invalidValue'))
+      .required(getTranslation('intro.enterAmount'))
+  })
+}
+
 const onBuy = async ({
   values,
   api,
@@ -43,16 +55,6 @@ const onBuy = async ({
       }
     }
   )
-}
-
-const validationSchema = getTranslation => {
-  return yup.object().shape({
-    amount: yup
-      .number()
-      .min('0.01', getTranslation('intro.invalidValue'))
-      .typeError(getTranslation('intro.invalidValue'))
-      .required(getTranslation('intro.enterAmount'))
-  })
 }
 
 const Form = ({
@@ -95,7 +97,9 @@ const Form = ({
         initialValues={{ amount: 1, discalimer: true }}
         validationSchema={() => validationSchema(getTranslation)}
         render={api => {
-          const hasStarted = from && moment.unix(from).diff(moment.now()) < 0
+          const nowUTC = moment().add(TIMEZONE, 'hours')
+          const hasStarted = from && moment.unix(from).diff(nowUTC) < 0
+
           const disabled =
             !web3.version || !hasStarted || (hasStarted && capReached)
 
