@@ -22,7 +22,7 @@
       width: 100%;
       max-height: 575px;
       min-height: 575px;
-      min-width: 930px;
+      min-width: 1110px;
       z-index: 1;
       display: flex;
       position: relative;
@@ -135,5 +135,13 @@
   .intro {
     align-items: center !important;
     display: flex;
+  }
+}
+
+@media only screen and (max-width: 1110px) {
+  .intro {
+    .container {
+      max-width: 100%;
+    }
   }
 }

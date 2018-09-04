@@ -21,6 +21,10 @@ const updateUI = async ({ deployedContracts, accounts, setState, web3 }) => {
     res && setState({ totalSupply: web3.fromWei(res.toNumber(), 'ether') })
   })
 
+  await Karbon14Crowdsale.openingTime((err, res) => {
+    res && setState({ openingTime: res.toNumber() })
+  })
+
   await Karbon14Crowdsale.closingTime((err, res) => {
     res && setState({ closingTime: res.toNumber() })
   })
@@ -46,6 +50,10 @@ const updateUI = async ({ deployedContracts, accounts, setState, web3 }) => {
       setState({
         getMaxCommunityTokens: web3.fromWei(res.toNumber(), 'ether')
       })
+  })
+
+  await Karbon14Crowdsale.capReached((err, res) => {
+    res && setState({ capReached: res })
   })
 
   // Get Token Data
@@ -101,12 +109,14 @@ const Crowdsale = ({ selectedLanguage, getTranslation }) => (
         <Component
           initialState={{
             totalSupply: undefined,
+            openingTime: undefined,
             closingTime: undefined,
             goal: undefined,
             cap: undefined,
             weiRaised: undefined,
             getMaxCommunityTokens: undefined,
             rate: undefined,
+            capReached: true,
             name: undefined,
             ticker: undefined,
             balanceOf: undefined
@@ -123,11 +133,13 @@ const Crowdsale = ({ selectedLanguage, getTranslation }) => (
                   <div className="left-container">
                     <div className="token">
                       <Counter
+                        from={state.openingTime}
                         to={state.closingTime}
                         cap={state.cap}
                         goal={state.goal}
                         raised={state.weiRaised}
                         total={state.totalSupply / state.rate}
+                        capReached={state.capReached}
                         getTranslation={getTranslation}
                       />
 
@@ -193,6 +205,7 @@ const Crowdsale = ({ selectedLanguage, getTranslation }) => (
 
                   <div className="right-container">
                     <Form
+                      from={state.openingTime}
                       balance={
                         state.balanceOf
                           ? amountToLocale(state.balanceOf)
@@ -200,6 +213,7 @@ const Crowdsale = ({ selectedLanguage, getTranslation }) => (
                       }
                       rate={state.rate}
                       ticker={state.ticker}
+                      capReached={state.capReached}
                       getTranslation={getTranslation}
                       buyTokens={Karbon14Crowdsale.buyTokens}
                       web3={web3}

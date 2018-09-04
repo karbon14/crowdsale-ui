@@ -1,5 +1,6 @@
 import React from 'react'
 import * as yup from 'yup'
+import moment from 'moment'
 import { Formik } from 'formik'
 import PropTypes from 'prop-types'
 import { Button } from '@react-core/button'
@@ -55,9 +56,11 @@ const validationSchema = getTranslation => {
 }
 
 const Form = ({
+  from,
   balance = '',
   rate = 0,
   ticker = '',
+  capReached,
   getTranslation,
   amountToLocale,
   buyTokens,
@@ -91,49 +94,56 @@ const Form = ({
         enableReinitialize
         initialValues={{ amount: 1, discalimer: true }}
         validationSchema={() => validationSchema(getTranslation)}
-        render={api => (
-          <form onSubmit={api.handleSubmit}>
-            <TextField
-              theme={theme}
-              name="amount"
-              step="0.25"
-              min="0.01"
-              type="number"
-              autoComplete="off"
-              onKeyUp={new Function()}
-              onChange={api.handleChange}
-              onBlur={api.handleBlur}
-              placeholder={api.errors.amount}
-              value={web3.version ? api.values.amount : ''}
-              label={getTranslation('intro.investAmount')}
-              data-invalid={api.touched.amount && !!api.errors.amount}
-              disabled={!web3.version}
-            />
+        render={api => {
+          const hasStarted = from && moment.unix(from).diff(moment.now()) < 0
+          const disabled =
+            !web3.version || !hasStarted || (hasStarted && capReached)
 
-            <Checkbox
-              theme={theme}
-              name="discalimer"
-              onChange={api.handleChange}
-              onBlur={api.handleBlur}
-              value={api.values.discalimer}
-              label={getTranslation('intro.USAInvestDisclaimer')}
-              disabled={!web3.version}
-            />
+          return (
+            <form onSubmit={api.handleSubmit}>
+              <TextField
+                theme={theme}
+                name="amount"
+                step="0.25"
+                min="0.01"
+                type="number"
+                autoComplete="off"
+                onKeyUp={new Function()}
+                onChange={api.handleChange}
+                onBlur={api.handleBlur}
+                placeholder={api.errors.amount}
+                value={disabled ? '' : api.values.amount}
+                label={getTranslation('intro.investAmount')}
+                data-invalid={api.touched.amount && !!api.errors.amount}
+                disabled={!web3.version || capReached}
+              />
 
-            <p className="convertion">{`${api.values.amount ||
-              0} Ether = ${amountToLocale(
-              api.values.amount * Number(rate)
-            )} K14`}</p>
+              <Checkbox
+                theme={theme}
+                name="discalimer"
+                onChange={api.handleChange}
+                onBlur={api.handleBlur}
+                value={api.values.discalimer}
+                label={getTranslation('intro.USAInvestDisclaimer')}
+                disabled={!web3.version || capReached}
+              />
 
-            <Button
-              theme={theme}
-              type="button"
-              label={getTranslation('intro.invest')}
-              onClick={api.submitForm}
-              disabled={!api.values.discalimer || !web3.version}
-            />
-          </form>
-        )}
+              <p className="convertion">{`${
+                disabled ? 0 : api.values.amount
+              } Ether = ${amountToLocale(
+                disabled ? 0 : api.values.amount * Number(rate)
+              )} K14`}</p>
+
+              <Button
+                theme={theme}
+                type="button"
+                label={getTranslation('intro.invest')}
+                onClick={api.submitForm}
+                disabled={!api.values.discalimer || disabled}
+              />
+            </form>
+          )
+        }}
       />
       <p className="info">{getTranslation('intro.thinkTwice', true)}</p>
     </div>
@@ -142,9 +152,11 @@ const Form = ({
 )
 
 Form.propTypes = {
+  from: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   balance: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   rate: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   ticker: PropTypes.string,
+  capReached: PropTypes.bool,
   getTranslation: PropTypes.func,
   amountToLocale: PropTypes.func,
   buyTokens: PropTypes.func,

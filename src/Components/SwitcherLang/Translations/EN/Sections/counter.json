@@ -1,4 +1,7 @@
 {
+  "icoStarts": "Start",
+  "icoEnds": "End",
+  "capReached": "Cap Reached!",
   "days": "DAYS",
   "hours": "HOURS",
   "minutes": "MINUTES",

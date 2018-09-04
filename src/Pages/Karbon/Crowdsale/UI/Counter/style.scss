@@ -14,18 +14,18 @@
     margin-right: -50%;
     transform: rotate(0deg);
     z-index: 1;
+    padding: 15px 0;
 
     .filled {
-      width: 2px;
-      height: 45px;
-      background: #ffffff;
+      width: 3px;
+      height: 27px;
+      background: transparent;
     }
   }
 
   .circle {
     width: calc(100% - 40px);
     height: 50%;
-    background:#1641b5;
     border-radius: 50%;
     margin: 20px;
     min-width: 210px;
@@ -37,6 +37,7 @@
     .single-chart {
       width: calc(100% + 4px);
       height: calc(100% + 4px);
+      margin: -2px;
       justify-content: space-around;
 
       .circular-chart {
@@ -46,8 +47,13 @@
 
         .circle {
           fill: none;
-          stroke-width: 2.8;
+          stroke-width: 3.8;
           animation: progress 1s ease-out forwards;
+
+          &.raised {
+            stroke-width: 0.5px;
+            stroke: #0a3794;
+          }
 
           &.soft {
             stroke: #ff9f00;
@@ -65,8 +71,8 @@
     }
 
     .centre {
-      width: 76%;
-      height: 76%;
+      width: 80%;
+      height: 80%;
       background:#ffffff;
       border-radius: 50%;
       position: absolute;
@@ -74,6 +80,15 @@
       align-items: center;
       justify-content: center;
       flex-direction: column;
+
+      h3 {
+        color: #1641b5;
+        text-transform: uppercase;
+        font-weight: 600;
+        min-width: initial;
+        font-size: 0.75em;
+        margin-bottom: 5px;
+      }
 
       .unit {
         span {
@@ -92,6 +107,14 @@
           }
         }
       }
+
+      .capReached {
+        text-align: center;
+        color: #1641b5;
+        font-weight: 600;
+        margin: 0;
+        font-size: 1.5em;
+      }
     }
   }
 
@@ -105,15 +128,14 @@
       .colored {
         width: 20px;
         height: 20px;
-        background: #1641b5;
         margin-right: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
 
         > div {
-          width: calc(100% - 8px);
-          height: calc(100% - 8px);
+          width: calc(100% - 4px);
+          height: calc(100% - 4px);
 
           &.soft {
             background: #ff9f00;
@@ -128,7 +150,7 @@
           }
 
           &.raised {
-            background: #ffffff;
+            background: #0a3794;
           }
         }
       }

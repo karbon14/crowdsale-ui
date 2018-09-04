@@ -9,19 +9,33 @@ import style from './style.scss'
 let _state, _setState, _interval
 
 const timer = () => {
+  const from = moment.unix(_state.from)
   const to = moment.unix(_state.to)
-  const days = to.diff(moment.now(), 'days')
-  const hours = to.subtract(days, 'days').diff(moment.now(), 'hours')
-  const minutes = to.subtract(hours, 'hours').diff(moment.now(), 'minutes')
-  const seconds = to.subtract(minutes, 'minutes').diff(moment.now(), 'seconds')
+  const d = from.diff(moment.now()) < 0 ? to : from
+
+  const days = d.diff(moment.now(), 'days')
+  const hours = d.subtract(days, 'days').diff(moment.now(), 'hours')
+  const minutes = d.subtract(hours, 'hours').diff(moment.now(), 'minutes')
+  const seconds = d.subtract(minutes, 'minutes').diff(moment.now(), 'seconds')
   _state = { ..._state, days, hours, minutes, seconds }
   _setState(_state)
 }
 
-const Counter = ({ to, cap, goal, raised, total, getTranslation }) => (
+const Counter = ({
+  from,
+  to,
+  cap,
+  goal,
+  raised,
+  total,
+  capReached,
+  getTranslation
+}) => (
   <Component
+    from={from}
     to={to}
     initialState={{
+      from,
       to,
       cap,
       goal,
@@ -32,21 +46,26 @@ const Counter = ({ to, cap, goal, raised, total, getTranslation }) => (
       seconds: 0
     }}
     didUpdate={({ props, prevProps, state, prevState, setState }) => {
+      if (!isEqual(props.from, prevProps.from)) setState({ from })
       if (!isEqual(props.to, prevProps.to)) setState({ to })
 
-      if (!isEqual(state.to, prevState.to)) {
+      const hasDates = state.from && state.to
+      const differFrom = !isEqual(state.from, prevState.from)
+      const differTo = !isEqual(state.to, prevState.to)
+
+      if (hasDates && (differFrom || differTo)) {
         _state = state
         _setState = setState
-        _interval = to
-        // Update and set Timer
+        _interval = setInterval(timer, 1000)
         timer()
-        setInterval(timer, 1000)
       }
     }}
-    willUnmount={() => to && clearInterval(_interval)}
+    willUnmount={() => to && from && clearInterval(_interval)}
     render={({ state }) => {
+      const hasStarted = from && moment.unix(from).diff(moment.now()) < 0
       const goalAdvance = `${(goal * 100) / total}, 100`
       const capAdvance = `${(cap * 100) / total}, 100`
+      const raisedAdvance = `${(raised * 100) / total}, 100`
 
       return (
         <div className="counter">
@@ -85,29 +104,52 @@ const Counter = ({ to, cap, goal, raised, total, getTranslation }) => (
                       a 15.9155 15.9155 0 1 0 0 -31.831"
                   />
                 ) : null}
+                {total ? (
+                  <path
+                    className="circle raised"
+                    strokeDasharray={raisedAdvance}
+                    d="M18 2.0845
+                      a 15.9155 15.9155 0 1 0 0 31.831
+                      a 15.9155 15.9155 0 1 0 0 -31.831"
+                  />
+                ) : null}
               </svg>
             </div>
 
             <div className="centre">
-              <div className="unit">
-                <span>{state.days}</span>
-                <span>{getTranslation('counter.days')}</span>
-              </div>
+              {hasStarted && !capReached ? (
+                <React.Fragment>
+                  <h3>
+                    {getTranslation(
+                      `counter.${hasStarted ? 'icoEnds' : 'icoStarts'}`
+                    )}
+                  </h3>
+                  <div className="unit">
+                    <span>{state.days}</span>
+                    <span>{getTranslation('counter.days')}</span>
+                  </div>
 
-              <div className="unit">
-                <span>{state.hours}</span>
-                <span>{getTranslation('counter.hours')}</span>
-              </div>
+                  <div className="unit">
+                    <span>{state.hours}</span>
+                    <span>{getTranslation('counter.hours')}</span>
+                  </div>
 
-              <div className="unit">
-                <span>{state.minutes}</span>
-                <span>{getTranslation('counter.minutes')}</span>
-              </div>
+                  <div className="unit">
+                    <span>{state.minutes}</span>
+                    <span>{getTranslation('counter.minutes')}</span>
+                  </div>
 
-              <div className="unit">
-                <span>{padStart(state.seconds, 2, '0')}</span>
-                <span>{getTranslation('counter.seconds')}</span>
-              </div>
+                  <div className="unit">
+                    <span>{padStart(state.seconds, 2, '0')}</span>
+                    <span>{getTranslation('counter.seconds')}</span>
+                  </div>
+                </React.Fragment>
+              ) : null}
+              {hasStarted && capReached ? (
+                <h1 className="capReached">
+                  {getTranslation('counter.capReached')}
+                </h1>
+              ) : null}
             </div>
           </div>
 
@@ -166,11 +208,13 @@ const Counter = ({ to, cap, goal, raised, total, getTranslation }) => (
 )
 
 Counter.propTypes = {
+  from: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   to: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   cap: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   goal: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   raised: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   total: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  capReached: PropTypes.bool,
   getTranslation: PropTypes.func
 }
 
