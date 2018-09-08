@@ -18,56 +18,56 @@ const updateUI = async ({ deployedContracts, accounts, setState, web3 }) => {
   // Get Crowdsale Data
 
   await Karbon14Crowdsale.getTokenTotalSupply((err, res) => {
-    res && setState({ totalSupply: web3.fromWei(res.toNumber(), 'ether') })
+    !err && setState({ totalSupply: web3.fromWei(res.toNumber(), 'ether') })
   })
 
   await Karbon14Crowdsale.openingTime((err, res) => {
-    res && setState({ openingTime: res.toNumber() })
+    !err && setState({ openingTime: res.toNumber() })
   })
 
   await Karbon14Crowdsale.closingTime((err, res) => {
-    res && setState({ closingTime: res.toNumber() })
+    !err && setState({ closingTime: res.toNumber() })
   })
 
   await Karbon14Crowdsale.rate((err, res) => {
-    res && setState({ rate: res.toNumber() })
+    !err && setState({ rate: res.toNumber() })
   })
 
   await Karbon14Crowdsale.goal((err, res) => {
-    res && setState({ goal: web3.fromWei(res.toNumber(), 'ether') })
+    !err && setState({ goal: web3.fromWei(res.toNumber(), 'ether') })
   })
 
   await Karbon14Crowdsale.cap((err, res) => {
-    res && setState({ cap: web3.fromWei(res.toNumber(), 'ether') })
+    !err && setState({ cap: web3.fromWei(res.toNumber(), 'ether') })
   })
 
   await Karbon14Crowdsale.weiRaised((err, res) => {
-    res && setState({ weiRaised: web3.fromWei(res.toNumber(), 'ether') })
+    !err && setState({ weiRaised: web3.fromWei(res.toNumber(), 'ether') })
   })
 
   await Karbon14Crowdsale.getMaxCommunityTokens((err, res) => {
-    res &&
+    !err &&
       setState({
         getMaxCommunityTokens: web3.fromWei(res.toNumber(), 'ether')
       })
   })
 
   await Karbon14Crowdsale.capReached((err, res) => {
-    res && setState({ capReached: res })
+    !err && setState({ capReached: res })
   })
 
   // Get Token Data
 
   await Karbon14Token.name((err, res) => {
-    res && setState({ name: res })
+    !err && setState({ name: res })
   })
 
   await Karbon14Token.symbol((err, res) => {
-    res && setState({ ticker: res })
+    !err && setState({ ticker: res })
   })
 
   await Karbon14Token.balanceOf(accounts.addresses[0], (err, res) => {
-    res && setState({ balanceOf: web3.fromWei(res.toNumber(), 'ether') })
+    !err && setState({ balanceOf: web3.fromWei(res.toNumber(), 'ether') })
   })
 }
 
@@ -116,7 +116,7 @@ const Crowdsale = ({ selectedLanguage, getTranslation }) => (
             weiRaised: undefined,
             getMaxCommunityTokens: undefined,
             rate: undefined,
-            capReached: true,
+            capReached: undefined,
             name: undefined,
             ticker: undefined,
             balanceOf: undefined
@@ -206,6 +206,7 @@ const Crowdsale = ({ selectedLanguage, getTranslation }) => (
                   <div className="right-container">
                     <Form
                       from={state.openingTime}
+                      to={state.closingTime}
                       balance={
                         state.balanceOf
                           ? amountToLocale(state.balanceOf)

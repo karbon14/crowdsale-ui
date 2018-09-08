@@ -6,19 +6,25 @@ import padStart from 'lodash/padStart'
 import Component from '@reactions/component'
 import style from './style.scss'
 
-const TIMEZONE = -3
 let _state, _setState, _interval
 
-const timer = () => {
-  const from = moment.unix(_state.from)
-  const to = moment.unix(_state.to)
-  const nowUTC = moment().add(TIMEZONE, 'hours')
-  const d = from.diff(nowUTC) < 0 ? to : from
+const formatDatesUTC = state => {
+  return {
+    from: moment.unix(state.from).utc(),
+    to: moment.unix(state.to).utc(),
+    now: moment.utc().subtract(3, 'hours')
+  }
+}
 
-  const days = d.diff(nowUTC, 'days')
-  const hours = d.subtract(days, 'days').diff(nowUTC, 'hours')
-  const minutes = d.subtract(hours, 'hours').diff(nowUTC, 'minutes')
-  const seconds = d.subtract(minutes, 'minutes').diff(nowUTC, 'seconds')
+const timer = () => {
+  const { from, to, now } = formatDatesUTC(_state)
+  const d = from.diff(now) < 0 ? to : from
+
+  const days = d.diff(now, 'days')
+  const hours = d.subtract(days, 'days').diff(now, 'hours')
+  const minutes = d.subtract(hours, 'hours').diff(now, 'minutes')
+  const seconds = d.subtract(minutes, 'minutes').diff(now, 'seconds')
+
   _state = { ..._state, days, hours, minutes, seconds }
   _setState(_state)
 }
@@ -64,8 +70,9 @@ const Counter = ({
     }}
     willUnmount={() => to && from && clearInterval(_interval)}
     render={({ state }) => {
-      const nowUTC = moment().add(TIMEZONE, 'hours')
-      const hasStarted = from && moment.unix(from).diff(nowUTC) < 0
+      const { from, to, now } = formatDatesUTC(state)
+      const hasStarted = state.from && from.diff(now) < 0
+      const hasEnded = state.to && to.diff(now) < 0
 
       const goalAdvance = `${(goal * 100) / total}, 100`
       const capAdvance = `${(cap * 100) / total}, 100`
@@ -121,7 +128,8 @@ const Counter = ({
             </div>
 
             <div className="centre">
-              {(hasStarted && !capReached) || !hasStarted ? (
+              {(hasStarted && !hasEnded && !capReached) ||
+              (!hasEnded && !capReached) ? (
                 <React.Fragment>
                   <h3>
                     {getTranslation(
@@ -149,7 +157,14 @@ const Counter = ({
                   </div>
                 </React.Fragment>
               ) : null}
-              {hasStarted && capReached ? (
+
+              {hasEnded && !capReached ? (
+                <h1 className="crowdsaleEnded">
+                  {getTranslation('counter.crowdsaleEnded')}
+                </h1>
+              ) : null}
+
+              {capReached ? (
                 <h1 className="capReached">
                   {getTranslation('counter.capReached')}
                 </h1>

@@ -10,8 +10,6 @@ import { theme } from '@react-core/theme-karbon'
 import { TextField } from '@react-core/textfield'
 import style from './style.scss'
 
-const TIMEZONE = -3
-
 const validationSchema = getTranslation => {
   return yup.object().shape({
     amount: yup
@@ -59,7 +57,8 @@ const onBuy = async ({
 
 const Form = ({
   from,
-  balance = '',
+  to,
+  balance = 0,
   rate = 0,
   ticker = '',
   capReached,
@@ -72,7 +71,7 @@ const Form = ({
 }) => (
   <div className="form">
     <div className="balance">
-      <h3>{`${balance} ${ticker}`}</h3>
+      <h3>{`${web3.version ? balance : ''} ${ticker}`}</h3>
       <p>{getTranslation('intro.balance')}</p>
 
       <p className="info">{getTranslation('intro.balanceInfo')}</p>
@@ -97,11 +96,23 @@ const Form = ({
         initialValues={{ amount: 1, discalimer: true }}
         validationSchema={() => validationSchema(getTranslation)}
         render={api => {
-          const nowUTC = moment().add(TIMEZONE, 'hours')
-          const hasStarted = from && moment.unix(from).diff(nowUTC) < 0
+          const now = moment.utc().subtract(3, 'hours')
+          const hasStarted =
+            from &&
+            moment
+              .unix(from)
+              .utc()
+              .diff(now) < 0
+          const hasEnded =
+            to &&
+            moment
+              .unix(to)
+              .utc()
+              .diff(now) < 0
 
-          const disabled =
-            !web3.version || !hasStarted || (hasStarted && capReached)
+          const datesLoaded = hasStarted !== undefined && hasEnded !== undefined
+          const crowdsaleOpen = hasStarted && !hasEnded && !capReached
+          const disabled = !web3.version || !datesLoaded || !crowdsaleOpen
 
           return (
             <form onSubmit={api.handleSubmit}>
@@ -119,7 +130,7 @@ const Form = ({
                 value={disabled ? '' : api.values.amount}
                 label={getTranslation('intro.investAmount')}
                 data-invalid={api.touched.amount && !!api.errors.amount}
-                disabled={!web3.version || capReached}
+                disabled={!web3.version || disabled}
               />
 
               <Checkbox
@@ -129,7 +140,7 @@ const Form = ({
                 onBlur={api.handleBlur}
                 value={api.values.discalimer}
                 label={getTranslation('intro.USAInvestDisclaimer')}
-                disabled={!web3.version || capReached}
+                disabled={!web3.version || disabled}
               />
 
               <p className="convertion">{`${
@@ -157,6 +168,7 @@ const Form = ({
 
 Form.propTypes = {
   from: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  to: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   balance: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   rate: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   ticker: PropTypes.string,
