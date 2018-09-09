@@ -9,8 +9,14 @@ import { Form } from './Form'
 import './Assets/overlay.png'
 
 import { EthereumProvider } from './Utils/EthereumProvider'
-import CrowdsaleABI from './ABIs/Crowdsale-ABI.json'
-import Karbon14TokenABI from './ABIs/Karbon14Token-ABI.json'
+import {
+  abi as CrowdsaleABI,
+  networks as CrowdsaleNetworks
+} from './contracts/Karbon14Crowdsale.json'
+import {
+  abi as TokenABI,
+  networks as TokenNetworks
+} from './contracts/Karbon14Token.json'
 
 const updateUI = async ({ deployedContracts, accounts, setState, web3 }) => {
   const { Karbon14Token, Karbon14Crowdsale } = deployedContracts
@@ -75,14 +81,14 @@ const Crowdsale = ({ selectedLanguage, getTranslation }) => (
   <EthereumProvider
     contracts={[
       {
-        name: 'Karbon14Crowdsale',
-        ABI: CrowdsaleABI,
-        address: process.env.CROWDSALE_ADDRESS
+        name: 'Karbon14Token',
+        ABI: TokenABI,
+        address: TokenNetworks[process.env.NETWORK].address
       },
       {
-        name: 'Karbon14Token',
-        ABI: Karbon14TokenABI,
-        address: process.env.TOKEN_ADDRESS
+        name: 'Karbon14Crowdsale',
+        ABI: CrowdsaleABI,
+        address: CrowdsaleNetworks[process.env.NETWORK].address
       }
     ]}
   >

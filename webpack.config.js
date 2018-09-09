@@ -35,14 +35,7 @@ const getPlugins = argv => {
       'process.env.HOME_URL': JSON.stringify(
         process.env.HOME_URL || 'https://karbon14.org'
       ),
-      'process.env.TOKEN_ADDRESS': JSON.stringify(
-        process.env.TOKEN_ADDRESS ||
-          '0xfe71728493c8971af3e8d86c1dda342e05f5b1f2'
-      ),
-      'process.env.CROWDSALE_ADDRESS': JSON.stringify(
-        process.env.CROWDSALE_ADDRESS ||
-          '0xe70dbe88f3d3bd5a1946441b0d16a7fef3aefbb4'
-      )
+      'process.env.NETWORK': JSON.stringify(process.env.NETWORK || '5777')
     })
   ]
 

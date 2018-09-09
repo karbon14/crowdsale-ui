@@ -5,6 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development",
+    "start:dev": "NETWORK=5777 webpack-dev-server --mode development",
+    "start:ropsten": "NETWORK=3 webpack-dev-server --mode development",
     "build": "webpack --mode production",
     "precommit": "lint-staged",
     "lint": "eslint -f table src",
@@ -25,7 +27,7 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "babel-core": "6.26.3",
-    "babel-eslint": "8.2.6",
+    "babel-eslint": "9.0.0",
     "babel-loader": "7.1.5",
     "babel-preset-env": "1.7.0",
     "babel-preset-react": "6.24.1",
