@@ -41,7 +41,7 @@ const onBuy = async ({
 
       if (res) {
         api.resetForm()
-        toast.success(getTranslation('intro.buyOK'), {
+        toast.warning(getTranslation('intro.buyConfirmation'), {
           position: toast.POSITION.BOTTOM_LEFT
         })
 
@@ -49,6 +49,9 @@ const onBuy = async ({
           // Mining is finished
           // const { blockNumber, transactionHash, gasUsed } = txReceipt
           updateUI(txReceipt)
+          toast.success(getTranslation('intro.buyOK'), {
+            position: toast.POSITION.BOTTOM_LEFT
+          })
         })
       }
     }
@@ -96,7 +99,7 @@ const Form = ({
         initialValues={{ amount: 1, discalimer: true }}
         validationSchema={() => validationSchema(getTranslation)}
         render={api => {
-          const now = moment.utc().subtract(3, 'hours')
+          const now = moment.utc()
           const hasStarted =
             from &&
             moment
@@ -145,7 +148,7 @@ const Form = ({
 
               <p className="convertion">{`${
                 disabled ? 0 : api.values.amount
-              } Ether = ${amountToLocale(
+              } Eth = ${amountToLocale(
                 disabled ? 0 : api.values.amount * Number(rate)
               )} K14`}</p>
 

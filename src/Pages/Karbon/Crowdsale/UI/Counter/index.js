@@ -12,20 +12,22 @@ const formatDatesUTC = state => {
   return {
     from: moment.unix(state.from).utc(),
     to: moment.unix(state.to).utc(),
-    now: moment.utc().subtract(3, 'hours')
+    now: moment.utc()
   }
 }
 
 const timer = () => {
   const { from, to, now } = formatDatesUTC(_state)
   const d = from.diff(now) < 0 ? to : from
+  const hasStarted = from.diff(now) < 0
+  const hasEnded = to.diff(now) < 0
 
   const days = d.diff(now, 'days')
   const hours = d.subtract(days, 'days').diff(now, 'hours')
   const minutes = d.subtract(hours, 'hours').diff(now, 'minutes')
   const seconds = d.subtract(minutes, 'minutes').diff(now, 'seconds')
 
-  _state = { ..._state, days, hours, minutes, seconds }
+  _state = { ..._state, days, hours, minutes, seconds, hasStarted, hasEnded }
   _setState(_state)
 }
 
@@ -37,7 +39,9 @@ const Counter = ({
   raised,
   total,
   capReached,
-  getTranslation
+  getTranslation,
+  amountToLocale,
+  updateUI
 }) => (
   <Component
     from={from}
@@ -51,11 +55,19 @@ const Counter = ({
       days: 0,
       hours: 0,
       minutes: 0,
-      seconds: 0
+      seconds: 0,
+      hasStarted: false,
+      hasEnded: false
     }}
     didUpdate={({ props, prevProps, state, prevState, setState }) => {
       if (!isEqual(props.from, prevProps.from)) setState({ from })
       if (!isEqual(props.to, prevProps.to)) setState({ to })
+      if (
+        !isEqual(state.hasStarted, prevState.hasStarted) ||
+        !isEqual(state.hasEnded, prevState.hasEnded)
+      ) {
+        updateUI()
+      }
 
       const hasDates = state.from && state.to
       const differFrom = !isEqual(state.from, prevState.from)
@@ -70,13 +82,17 @@ const Counter = ({
     }}
     willUnmount={() => to && from && clearInterval(_interval)}
     render={({ state }) => {
-      const { from, to, now } = formatDatesUTC(state)
-      const hasStarted = state.from && from.diff(now) < 0
-      const hasEnded = state.to && to.diff(now) < 0
-
       const goalAdvance = `${(goal * 100) / total}, 100`
       const capAdvance = `${(cap * 100) / total}, 100`
       const raisedAdvance = `${(raised * 100) / total}, 100`
+
+      const displatTime = () => {
+        if (_interval) {
+          const { from, to } = formatDatesUTC(state)
+          const d = !state.hasStarted && !state.hasEnded ? from : to
+          return `${d.format('DD/MM/YYYY HH:mm')} (UTC)`
+        }
+      }
 
       return (
         <div className="counter">
@@ -128,14 +144,19 @@ const Counter = ({
             </div>
 
             <div className="centre">
-              {(hasStarted && !hasEnded && !capReached) ||
-              (!hasEnded && !capReached) ? (
+              {(_interval &&
+                state.hasStarted &&
+                !state.hasEnded &&
+                !capReached) ||
+              (_interval && !state.hasEnded && !capReached) ? (
                 <React.Fragment>
                   <h3>
                     {getTranslation(
-                      `counter.${hasStarted ? 'icoEnds' : 'icoStarts'}`
+                      `counter.${state.hasStarted ? 'icoEnds' : 'icoStarts'}`
                     )}
                   </h3>
+                  <h3>{displatTime()}</h3>
+
                   <div className="unit">
                     <span>{state.days}</span>
                     <span>{getTranslation('counter.days')}</span>
@@ -158,7 +179,7 @@ const Counter = ({
                 </React.Fragment>
               ) : null}
 
-              {hasEnded && !capReached ? (
+              {state.hasEnded && !capReached ? (
                 <h1 className="crowdsaleEnded">
                   {getTranslation('counter.crowdsaleEnded')}
                 </h1>
@@ -180,7 +201,11 @@ const Counter = ({
               <span>
                 <p>{getTranslation('counter.raised')}</p>
                 <p>
-                  {raised ? `${raised} ${getTranslation('counter.ether')}` : ''}
+                  {raised
+                    ? `${amountToLocale(raised)} ${getTranslation(
+                        'counter.ether'
+                      )}`
+                    : ''}
                 </p>
               </span>
             </div>
@@ -192,7 +217,11 @@ const Counter = ({
               <span>
                 <p>{getTranslation('counter.softCap')}</p>
                 <p>
-                  {goal ? `${goal} ${getTranslation('counter.ether')}` : ''}
+                  {goal
+                    ? `${amountToLocale(goal)} ${getTranslation(
+                        'counter.ether'
+                      )}`
+                    : ''}
                 </p>
               </span>
             </div>
@@ -203,7 +232,13 @@ const Counter = ({
               </div>
               <span>
                 <p>{getTranslation('counter.hardCap')}</p>
-                <p>{cap ? `${cap} ${getTranslation('counter.ether')}` : ''}</p>
+                <p>
+                  {cap
+                    ? `${amountToLocale(cap)} ${getTranslation(
+                        'counter.ether'
+                      )}`
+                    : ''}
+                </p>
               </span>
             </div>
 
@@ -214,7 +249,11 @@ const Counter = ({
               <span>
                 <p>{getTranslation('counter.totalSupply')}</p>
                 <p>
-                  {total ? `${total} ${getTranslation('counter.ether')}` : ''}
+                  {total
+                    ? `${amountToLocale(total)} ${getTranslation(
+                        'counter.ether'
+                      )}`
+                    : ''}
                 </p>
               </span>
             </div>
@@ -234,7 +273,9 @@ Counter.propTypes = {
   raised: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   total: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   capReached: PropTypes.bool,
-  getTranslation: PropTypes.func
+  getTranslation: PropTypes.func,
+  amountToLocale: PropTypes.func,
+  updateUI: PropTypes.func
 }
 
 export { Counter }

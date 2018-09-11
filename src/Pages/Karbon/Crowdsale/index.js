@@ -147,6 +147,15 @@ const Crowdsale = ({ selectedLanguage, getTranslation }) => (
                         total={state.totalSupply / state.rate}
                         capReached={state.capReached}
                         getTranslation={getTranslation}
+                        amountToLocale={amountToLocale}
+                        updateUI={() =>
+                          updateUI({
+                            deployedContracts,
+                            accounts,
+                            setState,
+                            web3
+                          })
+                        }
                       />
 
                       <div className="contracts">

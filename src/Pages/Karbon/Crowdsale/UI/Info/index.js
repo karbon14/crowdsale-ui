@@ -4,6 +4,16 @@ import { toast } from '@react-core/toast'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import style from './style.scss'
 
+const getEtherscanScanURL = () => {
+  const etherscanURLs = {
+    '1': 'https://etherscan.io',
+    '3': 'https://ropsten.etherscan.io',
+    '5777': ''
+  }
+
+  return etherscanURLs[process.env.NETWORK]
+}
+
 const Info = ({
   value,
   label,
@@ -17,7 +27,7 @@ const Info = ({
         <a
           rel="noopener noreferrer"
           target="_blank"
-          href={`https://ropsten.etherscan.io/address/${value}`}
+          href={`${getEtherscanScanURL()}/address/${value}`}
         >
           {value}
         </a>

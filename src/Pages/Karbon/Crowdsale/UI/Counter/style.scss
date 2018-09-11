@@ -87,7 +87,13 @@
         font-weight: 600;
         min-width: initial;
         font-size: 0.75em;
-        margin-bottom: 5px;
+        line-height: 1.55em;
+
+        &:last-of-type {
+          font-size: 0.65em;
+          margin-bottom: 5px;
+          color: #000000;
+        }
       }
 
       .unit {

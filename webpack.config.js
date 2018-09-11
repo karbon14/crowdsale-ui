@@ -35,7 +35,7 @@ const getPlugins = argv => {
       'process.env.HOME_URL': JSON.stringify(
         process.env.HOME_URL || 'https://karbon14.org'
       ),
-      'process.env.NETWORK': JSON.stringify(process.env.NETWORK || '5777')
+      'process.env.NETWORK': JSON.stringify(process.env.NETWORK || '1')
     })
   ]
 
