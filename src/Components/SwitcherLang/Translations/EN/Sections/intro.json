@@ -10,13 +10,14 @@
   "balance": "Balance",
   "balanceInfo": "Your balance in tokens.",
   "copiedAddress": "Address copied to clipboard",
-  "investAmount": "Amount to invest (in Ether)",
+  "investAmount": "Amount to invest (in Eth)",
   "invalidValue": "Invalid value",
   "enterAmount": "Choose amount",
   "USAInvestDisclaimer": "I agreed with Whitepaper's legal terms",
   "invest": "Invest now",
   "thinkTwice": "Think twice before inverstment in ICOs. <br /> Tokens will be deposited on a wallet you used to buy tokens.",
   "buyOK": "Congratulations, your bought was successfully!",
+  "buyConfirmation": "Transaction sended. Waiting for network confirmations.",
   "buyError": "Ups! Something went wrong :(",
   "metamaskError": "Ups! Metamask not detected :("
 }
