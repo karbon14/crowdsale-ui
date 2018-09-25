@@ -10,6 +10,7 @@ const Karbon = () => (
       <div className="karbon">
         <Header
           getTranslation={getTranslation}
+          selectedLanguage={selectedLanguage}
           sections={[]}
           homeURL={process.env.HOME_URL}
         />
