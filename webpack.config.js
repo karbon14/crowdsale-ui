@@ -15,11 +15,47 @@ const HtmlPlugin = new HtmlWebpackPlugin({
   baseHref: '/',
   inject: false,
   mobile: true,
+  scripts: ['https://www.googletagmanager.com/gtag/js?id=UA-126698710-4'],
   meta: [
     { charset: 'utf-8' },
     {
-      name: 'description',
-      content: 'Karbon14 crowdsale'
+      property: 'description',
+      content:
+        'Invest UI for the Karbon14 crowdsale campaign. Buy your K14 tokens now'
+    },
+    {
+      name: 'keywords',
+      content:
+        'Karbon14, ICO, Crowdsale, Blockchain, Smart Contracts, Proof of Life, Metamask, Ethereum, ERC20, ERC-20'
+    },
+    {
+      property: 'og:description',
+      content:
+        'Invest UI for the Karbon14 crowdsale campaign. Buy your K14 tokens now'
+    },
+    {
+      property: 'canonical',
+      content: 'https://crowdsale.karbon14.org/'
+    },
+    {
+      property: 'og:image',
+      content: 'https://crowdsale.karbon14.org/preview.jpg'
+    },
+    {
+      property: 'og:title',
+      content: 'Karbon14 Crowdsale'
+    },
+    {
+      property: 'og:type',
+      content: 'website'
+    },
+    {
+      property: 'og:url',
+      content: 'https://crowdsale.karbon14.org/'
+    },
+    {
+      property: 'og:site_name',
+      content: 'Karbon14 Crowdsale'
     }
   ]
 })
