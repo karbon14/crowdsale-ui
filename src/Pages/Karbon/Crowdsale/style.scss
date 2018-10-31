@@ -129,6 +129,22 @@
       }
     }
   }
+
+  p.disclaimer {
+    color: #637097;
+    font-size: 1em;
+    line-height: 1.86;
+    font-weight: 300;
+    margin: 10px 0;
+
+    a {
+      color: #16a3fe;
+      font-size: 1em;
+      line-height: 1.86;
+      font-weight: 300;
+      padding-left: 10px;
+    }
+  }
 }
 
 @media only screen and (max-width: 767px) {

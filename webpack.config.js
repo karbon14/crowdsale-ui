@@ -8,7 +8,7 @@ const APP_DIR = path.resolve(__dirname, 'src')
 
 // Html Auto generator
 const HtmlPlugin = new HtmlWebpackPlugin({
-  title: 'Karbon14 Crowdsale',
+  title: 'Karbon14 Crowdsale Ropsten',
   template: require('html-webpack-template'),
   appMountId: 'app',
   favicon: 'src/favicon.ico',
@@ -70,6 +70,9 @@ const getPlugins = argv => {
       ),
       'process.env.HOME_URL': JSON.stringify(
         process.env.HOME_URL || 'https://karbon14.org'
+      ),
+      'process.env.CROWDSALE_URL': JSON.stringify(
+        process.env.CROWDSALE_URL || 'https://crowdsale.karbon14.org'
       ),
       'process.env.NETWORK': JSON.stringify(process.env.NETWORK || '1')
     })
