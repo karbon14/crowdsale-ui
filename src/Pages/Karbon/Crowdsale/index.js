@@ -246,6 +246,16 @@ const Crowdsale = ({ selectedLanguage, getTranslation }) => (
                     />
                   </div>
                 </div>
+
+                <p className="disclaimer">
+                  {getTranslation('intro.disclaimer')}
+                  <a
+                    rel="noopener noreferrer"
+                    href={`${process.env.CROWDSALE_URL}`}
+                  >
+                    {getTranslation('intro.disclaimerLink')}
+                  </a>
+                </p>
               </div>
               <style jsx>{style}</style>
             </div>

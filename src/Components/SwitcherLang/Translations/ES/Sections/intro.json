@@ -19,5 +19,7 @@
   "buyOK": "Felicitaciones, ¡Tu compra fue exitosa!",
   "buyConfirmation": "Transacción enviada. Esperando la confirmación de la red.",
   "buyError": "¡Huy! Algo salió mal :(",
-  "metamaskError": "¡Huy! Metamask no detectado :("
+  "metamaskError": "¡Huy! Metamask no detectado :(",
+  "disclaimer": "Esta es una Crowdsale UI demo para testear como comprar en la Ropsten Network!",
+  "disclaimerLink": "Comprar mis tokens de K14 en la Main Net"
 }

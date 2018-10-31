@@ -19,5 +19,7 @@
   "buyOK": "Congratulations, your bought was successfully!",
   "buyConfirmation": "Transaction sended. Waiting for network confirmations.",
   "buyError": "Ups! Something went wrong :(",
-  "metamaskError": "Ups! Metamask not detected :("
+  "metamaskError": "Ups! Metamask not detected :(",
+  "disclaimer": "This is a demo Crowdsale UI to test how to buy on the Ropsten Network!",
+  "disclaimerLink": "Buy my K14 tokens on the Main Net"
 }
