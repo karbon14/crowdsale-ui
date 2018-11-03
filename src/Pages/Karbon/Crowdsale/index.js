@@ -222,11 +222,7 @@ const Crowdsale = ({ selectedLanguage, getTranslation }) => (
                     <Form
                       from={state.openingTime}
                       to={state.closingTime}
-                      balance={
-                        state.balanceOf
-                          ? amountToLocale(state.balanceOf)
-                          : state.balanceOf
-                      }
+                      balance={amountToLocale(state.balanceOf || 0)}
                       rate={state.rate}
                       ticker={state.ticker}
                       capReached={state.capReached}
