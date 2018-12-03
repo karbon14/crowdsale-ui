@@ -45,10 +45,10 @@ const onBuy = async ({
           position: toast.POSITION.BOTTOM_LEFT
         })
 
-        web3.eth.getTransactionReceiptMined(res).then(txReceipt => {
+        web3.eth.getTransactionReceiptMined(res).then(async () => {
           // Mining is finished
           // const { blockNumber, transactionHash, gasUsed } = txReceipt
-          updateUI(txReceipt)
+          await updateUI()
           toast.success(getTranslation('intro.buyOK'), {
             position: toast.POSITION.BOTTOM_LEFT
           })
