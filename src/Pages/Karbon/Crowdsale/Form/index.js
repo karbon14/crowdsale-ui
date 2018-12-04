@@ -80,7 +80,7 @@ const Form = ({
       <p className="info">{getTranslation('intro.balanceInfo')}</p>
     </div>
 
-    <div className="invest">
+    <div className="contribute">
       <Formik
         validateOnChange
         validateOnSubmit
@@ -131,7 +131,7 @@ const Form = ({
                 onBlur={api.handleBlur}
                 placeholder={api.errors.amount}
                 value={disabled ? '' : api.values.amount}
-                label={getTranslation('intro.investAmount')}
+                label={getTranslation('intro.contributionAmount')}
                 data-invalid={api.touched.amount && !!api.errors.amount}
                 disabled={!web3.version || disabled}
               />
@@ -142,7 +142,7 @@ const Form = ({
                 onChange={api.handleChange}
                 onBlur={api.handleBlur}
                 value={api.values.discalimer}
-                label={getTranslation('intro.USAInvestDisclaimer')}
+                label={getTranslation('intro.USAContributionDisclaimer')}
                 disabled={!web3.version || disabled}
               />
 
@@ -155,7 +155,7 @@ const Form = ({
               <Button
                 theme={theme}
                 type="button"
-                label={getTranslation('intro.invest')}
+                label={getTranslation('intro.contribution')}
                 onClick={api.submitForm}
                 disabled={!api.values.discalimer || disabled}
               />

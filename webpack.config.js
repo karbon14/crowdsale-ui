@@ -21,7 +21,7 @@ const HtmlPlugin = new HtmlWebpackPlugin({
     {
       property: 'description',
       content:
-        'Invest UI for the Karbon14 crowdsale campaign. Buy your K14 tokens now'
+        'Contribute UI for the Karbon14 crowdsale campaign. Buy your K14 tokens now'
     },
     {
       name: 'keywords',
@@ -31,7 +31,7 @@ const HtmlPlugin = new HtmlWebpackPlugin({
     {
       property: 'og:description',
       content:
-        'Invest UI for the Karbon14 crowdsale campaign. Buy your K14 tokens now'
+        'Contribute UI for the Karbon14 crowdsale campaign. Buy your K14 tokens now'
     },
     {
       property: 'canonical',
